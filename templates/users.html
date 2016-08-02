@@ -5,7 +5,8 @@
 </md-toolbar>
 
 <md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
-<md-button aria-label="Add" ng-click="register($event)" class="md-fab md-fab-bottom-right">
+
+<md-button aria-label="Add" ng-click="showAddMember($event)" class="md-fab md-fab-bottom-right">
   <md-icon class="material icons">person_add</md-icon>
 </md-button>
 
@@ -17,18 +18,19 @@
           <th md-column="md-column" md-numeric="md-numeric">#</th>
           <th md-column="md-column">ชื่อผู้ใช้งาน</th>
           <th md-column="md-column">ชื่อ - สกุล</th>
-          <!--<th md-column="md-column">ประเภท</th>-->
+          <th md-column="md-column">ประเภท</th>
           <th md-column="md-column"></th>
         </tr>
       </thead>
       <tbody md-body="md-body">
         <tr md-row="md-row" ng-if="!members.length">
-          <td md-cell="md-cell" colspan="4">ไม่พบรายการ</td>
+          <td md-cell="md-cell" colspan="5">ไม่พบรายการ</td>
         </tr>
         <tr md-row="md-row" ng-repeat="member in members" ng-if="members.length">
           <td md-cell="md-cell">{{ member.id }}</td>
           <td md-cell="md-cell">{{ member.username }}</td>
           <td md-cell="md-cell">{{ member.fullname }}</td>
+          <td md-cell="md-cell">{{ member.group_name }}</td>
           <td md-cell="md-cell">
             <md-menu>
               <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">

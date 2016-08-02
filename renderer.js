@@ -10,7 +10,8 @@ angular.module('app', [
   'app.controllers.Users',
   'app.controllers.Groups',
   'app.services.Users',
-  'app.service.Connnection'
+  'app.service.Connnection',
+  'app.controllers.AddMemberDialog'
 ])
 
   .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
