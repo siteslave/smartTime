@@ -1,0 +1,55 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools"><i class="material-icons">group</i>
+    <h2>&nbsp; รายชื่อสมาชิก (Members)</h2><span flex="flex"></span>
+  </div>
+</md-toolbar>
+
+<md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
+<md-button aria-label="Add" ng-click="register($event)" class="md-fab md-fab-bottom-right">
+  <md-icon class="material icons">person_add</md-icon>
+</md-button>
+
+<md-content layout-padding>
+  <md-table-container>
+    <table md-table="md-table">
+      <thead md-head="md-head">
+        <tr md-row="md-row">
+          <th md-column="md-column" md-numeric="md-numeric">#</th>
+          <th md-column="md-column">ชื่อผู้ใช้งาน</th>
+          <th md-column="md-column">ชื่อ - สกุล</th>
+          <th md-column="md-column">ประเภท</th>
+          <th md-column="md-column"></th>
+        </tr>
+      </thead>
+      <tbody md-body="md-body">
+        <tr md-row="md-row" ng-if="!users.length">
+          <td md-cell="md-cell" colspan="5">ไม่พบรายการ</td>
+        </tr>
+        <tr md-row="md-row" ng-repeat="user in users" ng-if="users.length">
+          <td md-cell="md-cell">{{ $index + 1 }}</td>
+          <td md-cell="md-cell">{{ user.username }}</td>
+          <td md-cell="md-cell">{{ user.group_name }}</td>
+          <td md-cell="md-cell">
+            <md-menu>
+              <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
+                <md-icon class="material-icons">more_vert</md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="update($event, m.memberId)">
+                    <md-icon class="material-icons">create</md-icon>&nbsp; แก้ไขข้อมูล
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="remove($event, m.memberId)">
+                    <md-icon class="material-icons">close</md-icon>&nbsp; ลบรายการ
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</md-content>
