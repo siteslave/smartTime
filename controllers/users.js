@@ -10,12 +10,42 @@ angular.module('app.controllers.Users', [])
       $mdOpenMenu(ev);
     };
 
-    $scope.getList = function () {
+    $scope.total = 0;
+    
+    // Paging
+    $scope.query = {
+      limit: 3,
+      page: 1
+    };
+
+    $scope.onPaginate = function (page, limit) {
+      var offset = (page - 1) * limit;
+      $scope.getList(limit, offset);
+    }
+
+    $scope.getTotal = function () {
+      UsersService.getTotal(db)
+        .then(function (total) {
+          $scope.total = total;
+        }, function (err) {
+          console.log(err);
+        });
+    }
+
+    $scope.initialData = function () {
+      var limit = $scope.query.limit;
+      var offset = ($scope.query.page - 1) * $scope.query.limit;
+
+      $scope.getTotal();
+      $scope.getList(limit, offset);
+    };
+    
+    $scope.getList = function (limit, offset) {
       $scope.members = [];
 
       $scope.showLoading = true;
       
-      UsersService.getMembers(db)
+      UsersService.getMembers(db, limit, offset)
         .then(function (rows) {
           $scope.members = rows;
           $scope.showLoading = false;
@@ -24,10 +54,8 @@ angular.module('app.controllers.Users', [])
           console.log(err);
           $scope.showLoading = false;
         });
-    }
-
-    $scope.getList();    
-
+    }    
+    
     $scope.showAddMember = function () {
 
       $mdDialog.show({
@@ -39,7 +67,7 @@ angular.module('app.controllers.Users', [])
         fullscreen: false
       })
         .then(function () {
-          $scope.getList();
+          $scope.initialData();
         }, function () {
           //
         });
@@ -59,7 +87,7 @@ angular.module('app.controllers.Users', [])
         fullscreen: false
       })
         .then(function () {
-          $scope.getList();
+          $scope.initialData();
         }, function () {
           //
         });
@@ -79,7 +107,7 @@ angular.module('app.controllers.Users', [])
         // ยืนยันการลบ
         UsersService.remove(db, id)
           .then(function () {
-            $scope.getList();
+            $scope.initialData();
           }, function (err) {
             alert('เกิดข้อผิดพลาด : ' + JSON.stringify(err));
           });
@@ -90,4 +118,7 @@ angular.module('app.controllers.Users', [])
       
     }
 
+
+    $scope.initialData();
+    
   });

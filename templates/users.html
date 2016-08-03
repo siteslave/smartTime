@@ -53,5 +53,16 @@
         </tr>
       </tbody>
     </table>
+
+
+    <md-table-pagination 
+    md-limit="query.limit" 
+    md-page="query.page" 
+    md-total="{{ total }}" 
+    md-on-paginate="onPaginate" 
+    md-options="[5, 20, 30, 50]" 
+    md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}" 
+    md-page-select></md-table-pagination>
+
   </md-table-container>
 </md-content>

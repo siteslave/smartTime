@@ -2,7 +2,7 @@
 angular.module('app.services.Users', [])
   .factory('UsersService', function ($q) {
     return {
-      getMembers: function (db) {
+      getMembers: function (db, limit, offset) {
         var q = $q.defer();
         /*
         select m.id, m.fullname, m.username, g.name as group_name
@@ -13,12 +13,27 @@ angular.module('app.services.Users', [])
         db('test_members as m')
           .select('m.id', 'm.fullname', 'm.username', 'g.name as group_name')
           .leftJoin('test_groups as g', 'g.id', 'm.group_id')
-          .limit(10)
+          .limit(limit)
+          .offset(offset)
           .then(function (rows) {
             q.resolve(rows);
           })
           .catch(function (err) {
             q.reject(err);
+          });
+        
+        return q.promise;
+      },
+
+      getTotal: function (db) {
+        var q = $q.defer();
+        db('test_members')
+          .count('* as total')
+          .then(function (rows) {
+            q.resolve(rows[0].total)
+          })
+          .catch(function (err) {
+            q.reject(err)
           });
         
         return q.promise;
