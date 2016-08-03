@@ -113,6 +113,23 @@ angular.module('app.services.Users', [])
           });
         
         return q.promise;
+      },
+
+      getReportsMembers: function (db) {
+        var q = $q.defer();
+        var sql = `select g.name as group_name, count(*) as total
+                  from test_members as m
+                  left join test_groups as g on g.id=m.group_id
+                  group by m.group_id`;
+        db.raw(sql, [])
+          .then(function (rows) {
+            q.resolve(rows[0])
+          })
+          .catch(function (err) {
+            q.reject(err)
+          });
+        
+        return q.promise;
       }
 
     }

@@ -35,6 +35,11 @@
                       <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">group</i></md-icon>ประเภทสมาชิก
                     </md-button>
                   </md-menu-item>
+                  <md-menu-item>
+                    <md-button ui-sref="reports">
+                      <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">pie_chart</i></md-icon>รายงาน
+                    </md-button>
+                  </md-menu-item>
                 </md-menu-content>
               </md-subheader>
              
@@ -84,6 +89,9 @@
     require('angular-aria')
     require('angular-messages')
     require('angular-material-data-table')
+
+    window.Highcharts = require('highcharts')
+    require('./node_modules/highcharts-ng/dist/highcharts-ng.min.js')
     
     require('./renderer.js')
     require('./controllers/sidenav.js')
@@ -94,6 +102,7 @@
     require('./controllers/groups.js')
     require('./controllers/add-member-dialog.js')
     require('./controllers/update-member-dialog.js')
+    require('./controllers/reports.js')
 
     require('./services/users.js')
     require('./services/connection.js')
