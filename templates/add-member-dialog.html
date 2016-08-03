@@ -18,13 +18,13 @@
           <div flex>
             <md-input-container class="md-block">
               <label>Username</label>
-              <input ng-model="user.username" ng-required="true">
+              <input ng-model="user.username" ng-required="true" ng-disabled="isUpdate">
             </md-input-container>
           </div>
           <div flex>
             <md-input-container class="md-block">
               <label>Password</label>
-              <input type="password" ng-model="user.password" ng-required="true">
+              <input type="password" ng-model="user.password" ng-required="true" ng-disabled="isUpdate">
             </md-input-container>
           </div>
         </div>
@@ -38,7 +38,7 @@
           <div flex>
             <md-input-container>
               <label>Group</label>
-              <md-select style="width: 250px;" ng-model="user.group_id" ng-required="true">
+              <md-select style="width: 250px;" ng-model="user.group_id">
                 <md-option ng-repeat="group in groups" value="{{group.id}}">
                   {{group.name}}
                 </md-option>

@@ -49,6 +49,41 @@ angular.module('app.services.Users', [])
           });
         
         return q.promise;
+      },
+
+      getDetail: function (db, id) {
+        var q = $q.defer();
+        db('test_members')
+          .select('id', 'fullname', 'username', 'group_id')
+          .where('id', id)
+          .then(function (rows) {
+            q.resolve(rows[0]) // object {}
+          })
+          .catch(function (err) {
+            q.reject(err)
+          });
+        
+        return q.promise;
+      },
+
+      update: function (db, memberId, user) {
+        var q = $q.defer();
+        db('test_members')
+          .where('id', memberId)
+          .update({
+            fullname: user.fullname,
+            group_id: user.group_id
+          })
+          .then(function () {
+            q.resolve()
+          })
+          .catch(function (err) {
+            q.reject(err)
+          });
+        
+        return q.promise;
+          
       }
+
     }
   });

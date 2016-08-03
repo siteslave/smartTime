@@ -5,6 +5,7 @@ angular.module('app.controllers.Sidenav', [])
     $scope.toggleSidenav = function (menuId) {
       $mdSidenav(menuId).toggle();
     };
+    
     $scope.toggleLeft = () => {
       $mdSidenav('left')
         .toggle();

@@ -6,6 +6,10 @@ angular.module('app.controllers.Users', [])
     var configFile = $rootScope.configFile;
     var db = Connection.getConnection(configFile);
     
+    $scope.openMenu = function ($mdOpenMenu, ev) {
+      $mdOpenMenu(ev);
+    };
+
     $scope.getList = function () {
       $scope.members = [];
 
@@ -41,5 +45,25 @@ angular.module('app.controllers.Users', [])
         });
 
     };
+
+    $scope.update = function (id) {
+
+      $rootScope.memberId = id;
+      
+      $mdDialog.show({
+        controller: 'UpdateMemberDialogCtrl',
+        templateUrl: './templates/add-member-dialog.html',
+        parent: angular.element(document.body),
+        // targetEvent: event,
+        clickOutsideToClose: false,
+        fullscreen: false
+      })
+        .then(function () {
+          $scope.getList();
+        }, function () {
+          //
+        });
+
+    }
 
   });
