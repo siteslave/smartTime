@@ -1,3 +1,4 @@
+
 var moment = require('moment');
 
 angular.module('app', [
@@ -12,13 +13,14 @@ angular.module('app', [
   'app.controllers.Users',
   'app.controllers.Groups',
   'app.services.Users',
-  'app.service.Connnection',
+  'app.services.Connnection',
   'app.controllers.AddMemberDialog',
   'app.controllers.UpdateMemberDialog',
   'app.controllers.Reports'
 ])
 
-  .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider, $mdDateLocaleProvider) {
+  .config(function ($stateProvider, $urlRouterProvider,
+    $mdThemingProvider, $mdDateLocaleProvider) {
 
     // theme
     $mdThemingProvider.theme('default')

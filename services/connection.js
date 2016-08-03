@@ -4,7 +4,7 @@ var path = require('path')
 var fs = require('fs')
 var fse = require('fs-extra')
 
-angular.module('app.service.Connnection', [])
+angular.module('app.services.Connnection', [])
   .factory('Connection', function () {
     
     var appDataPath = app.getPath('appData');

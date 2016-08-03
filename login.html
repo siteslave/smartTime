@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./node_modules/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="./libs/iconfont/material-icons.css">
+    <title>Material App</title>
+  </head>
+  <body>
+   
+    <md-toolbar class="md-hue-2 md-whiteframe-z1">
+      <div class="md-toolbar-tools">
+        <md-button aria-label="Main" class="md-icon-button">
+          <md-icon class="material-icons">desktop_windows</md-icon>
+        </md-button>
+        <h2><span>iChare</span></h2>
+      </div>
+    </md-toolbar>
+    <md-content ng-controller="LoginCtrl">
+      <div layout="row" layout-align="center center" layout-padding>
+        <div flex="50">
+          <form name="frmLogin">
+          <md-card md-theme-watch>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">Please login</span>
+                <span class="md-subhead">Enter username and password</span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+              <div layout="column">
+                <div flex>
+                  <md-input-container class="md-block">
+                    <label>Username</label>
+                    <input ng-model="username" ng-required="true">
+                  </md-input-container>
+                </div>
+                <div flex>
+                  <md-input-container class="md-block">
+                    <label>Password</label>
+                    <input type="password" ng-model="password" ng-required="true">
+                  </md-input-container>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+              <md-button class="md-raised md-primary" ng-click="Login()" ng-disabled="frmLogin.$invalid">Login</md-button>
+              <md-button class="md-warn" ng-click="Exit()">Close</md-button>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </div>
+    </md-content>
+  </body>
+
+  <script>
+    require('angular')
+    require('angular-material')
+    require('angular-animate')
+    require('angular-aria')
+    require('angular-messages')
+ 
+    require('./login.js')
+    require('./services/connection.js')
+    
+  </script>
+</html>
