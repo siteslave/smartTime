@@ -30,13 +30,19 @@ angular.module('app.service.Connnection', [])
     
     return {
       getConnection: function () {
-        var config = fse.readJsonSync(configFile);
+        var config = this.getConfig();
 
         return require('knex')({
           client: 'mysql',
           connection: config,
           acquireConnectionTimeout: 10000
         });
-      } 
+      },
+      getConfig: function () {
+        return fse.readJsonSync(configFile);
+      },
+      getConfigFile: function () {
+        return configFile;
+      }
   }
 })

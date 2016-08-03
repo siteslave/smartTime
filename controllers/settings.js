@@ -1,14 +1,13 @@
 var fse = require('fs-extra')
 
 angular.module('app.controllers.Settings', [])
-  .controller('SettingsCtrl', function ($scope, $rootScope, $mdDialog) {
+  .controller('SettingsCtrl', function ($scope, $rootScope, $mdDialog, Connection) {
     
-    $scope.config = fse.readJsonSync($rootScope.configFile)
-
-    console.log($scope.config)
+    $scope.config = Connection.getConfig();
+    var configFile = Connection.getConfigFile();
 
     $scope.save = function () {
-      fse.writeJson($rootScope.configFile, $scope.config, function (err) {
+      fse.writeJson(configFile, $scope.config, function (err) {
         if (err) {
           console.log(err);
           $mdDialog.show(
