@@ -10,7 +10,7 @@ angular.module('app.controllers.Reports', [])
     $scope.chart1 = {
       options: {
         chart: {
-          type: 'column'
+          type: 'bar'
         }
       },
       xAxis: {
