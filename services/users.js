@@ -83,6 +83,21 @@ angular.module('app.services.Users', [])
         
         return q.promise;
           
+      },
+
+      remove: function (db, id) {
+        var q = $q.defer();
+        // DELETE FROM test_members WHERE id=xx
+        var sql = 'DELETE FROM test_members WHERE id=?';
+        db.raw(sql, [id])
+          .then(function () {
+            q.resolve()
+          })
+          .catch(function (err) {
+            q.reject(err)
+          });
+        
+        return q.promise;
       }
 
     }

@@ -66,4 +66,28 @@ angular.module('app.controllers.Users', [])
 
     }
 
+    $scope.remove = function (id) {
+      var confirm = $mdDialog.confirm()
+        .title('ยืนยันการลบข้อมูล')
+        .textContent('คุณต้องลบรายการนี้ ใช่หรือไม่?')
+        .ariaLabel('confirm')
+        // .targetEvent(event)
+        .ok('ใช่, ฉันต้องการลบ')
+        .cancel('ยกเลิก');
+      
+      $mdDialog.show(confirm).then(function () {
+        // ยืนยันการลบ
+        UsersService.remove(db, id)
+          .then(function () {
+            $scope.getList();
+          }, function (err) {
+            alert('เกิดข้อผิดพลาด : ' + JSON.stringify(err));
+          });
+
+      }, function () {
+        //
+      });
+      
+    }
+
   });
