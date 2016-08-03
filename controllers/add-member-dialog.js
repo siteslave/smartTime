@@ -6,8 +6,8 @@ angular.module('app.controllers.AddMemberDialog', [])
   .controller('AddMemberDialogCtrl', function ($scope, $rootScope,
     $mdDialog, UsersService, Connection) {
   
-    var configFile = $rootScope.configFile;
-    var db = Connection.getConnection(configFile);
+    // var configFile = $rootScope.configFile;
+    var db = Connection.getConnection();
     
     $scope.user = {};
 

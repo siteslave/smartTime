@@ -3,8 +3,8 @@ var fse = require('fs-extra')
 angular.module('app.controllers.Users', [])
   .controller('UsersCtrl', function ($scope, $rootScope, $mdDialog, UsersService, Connection) {
     // var config = fse.readJsonSync($rootScope.configFile)
-    var configFile = $rootScope.configFile;
-    var db = Connection.getConnection(configFile);
+    // var configFile = $rootScope.configFile;
+    var db = Connection.getConnection();
     
     $scope.openMenu = function ($mdOpenMenu, ev) {
       $mdOpenMenu(ev);

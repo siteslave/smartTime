@@ -9,8 +9,8 @@ angular.module('app.controllers.UpdateMemberDialog', [])
     $scope.memberId = $rootScope.memberId;
     $scope.user = {};
 
-    var configFile = $rootScope.configFile;
-    var db = Connection.getConnection(configFile);
+    // var configFile = $rootScope.configFile;
+    var db = Connection.getConnection();
     
         // get groups
     UsersService.getGroups(db)
