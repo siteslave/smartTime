@@ -6,6 +6,26 @@
 
 <md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
 
-<md-content layout-padding>
+<md-content layout-padding style="height: 100%;">
   <highchart config="chart1"></highchart>
+
+  <div layout="row">
+    <div flex="25">
+      <label for="">วันที่เริ่มต้น</label>
+      <md-datepicker ng-model="start" md-placeholder="Enter date"></md-datepicker>
+    </div>
+    <div flex="25">
+      <label for="">วันที่สิ้นสุด</label>
+      <md-datepicker ng-model="end" md-placeholder="Enter date"></md-datepicker>
+    </div>
+    <div flex="20">
+      <br>
+      <md-button class="md-raised md-primary" ng-click="showReport()">แสดงรายงาน</md-button>
+    </div>
+  </div>
+  <div layout="row">
+    <div flex>
+      <highchart config="chart2"></highchart>
+    </div>
+  </div>
 </md-content>

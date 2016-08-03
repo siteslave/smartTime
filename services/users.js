@@ -130,6 +130,30 @@ angular.module('app.services.Users', [])
           });
         
         return q.promise;
+      }, 
+
+      getReportsDrug: function (db, start, end) {
+        var q = $q.defer();
+
+        var sql = `
+        select count(*) as total, d.DNAME
+        from drug_opd as d
+        where d.HOSPCODE='04248'
+        and d.DATE_SERV BETWEEN ? and ?
+        group by d.DIDSTD
+        order by total desc
+        limit 10
+        `;
+
+        db.raw(sql, [start, end])
+          .then(function (rows) {
+            q.resolve(rows[0])
+          })
+          .catch(function (err) {
+            q.reject(err)
+          });
+        
+        return q.promise;
       }
 
     }
