@@ -4,12 +4,7 @@ angular.module('app.services.Users', [])
     return {
       getMembers: function (db, limit, offset) {
         var q = $q.defer();
-        /*
-        select m.id, m.fullname, m.username, g.name as group_name
-        from test_members as m
-        left join test_groups as g on g.id=m.group_id
-        limit 10
-        */
+
         db('test_members as m')
           .select('m.id', 'm.fullname', 'm.username', 'g.name as group_name')
           .leftJoin('test_groups as g', 'g.id', 'm.group_id')

@@ -1,0 +1,80 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools"><i class="material-icons">group</i>
+    <h2>&nbsp; ตารางการปฎิบัติงาน (Attendances)</h2><span flex="flex"></span>
+  </div>
+</md-toolbar>
+
+<md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
+<md-button aria-label="Add" ng-click="showAddMember($event)" class="md-fab md-fab-bottom-right">
+  <md-icon class="material icons">cloud_download</md-icon>
+</md-button>
+
+<md-content layout-padding>
+  <div layout-gt-xs="row" style="background-color: white;">
+      <md-input-container class="md-block" flex-gt-xs>
+        <label>รหัสพนักงาน</label>
+        <input ng-model="targetName">
+      </md-input-container>
+      <md-input-container>
+        <md-button class="md-icon-button" aria-label="Search" ng-click="openTarget()">
+          <md-icon class="material-icons">search</md-icon>
+        </md-button>
+      </md-input-container>
+      &nbsp;&nbsp;&nbsp;
+      <md-input-container>
+        <label>วันที่</label>
+        <md-datepicker ng-model="workDate"></md-datepicker>
+      </md-input-container>
+
+      <md-input-container>
+        <md-button class="md-raised md-primary" ng-click="doImport()">แสดง</md-button>
+      </md-input-container>
+  </div>
+  &nbsp;
+  <md-table-container style="background-color: white;">
+    <table md-table="md-table">
+      <thead md-head="md-head">
+        <tr md-row="md-row">
+          <th md-column="md-column">#</th>
+          <th md-column="md-column">ชื่อ - สกุล</th>
+          <th md-column="md-column">แผนก</th>
+          <th md-column="md-column">สถานะ</th>
+          <th md-column="md-column">เข้า</th>
+          <th md-column="md-column">ออก</th>
+          <th md-column="md-column">หมายเหตุ</th>
+          <th md-column="md-column"></th>
+        </tr>
+      </thead>
+      <tbody md-body="md-body">
+        <tr md-row="md-row" ng-if="!members.length">
+          <td md-cell="md-cell" colspan="8">ไม่พบรายการ</td>
+        </tr>
+        <tr md-row="md-row" ng-repeat="member in members" ng-if="members.length">
+          <td md-cell="md-cell">{{ member.id }}</td>
+          <td md-cell="md-cell">{{ member.username }}</td>
+          <td md-cell="md-cell">{{ member.fullname }}</td>
+          <td md-cell="md-cell">{{ member.group_name }}</td>
+          <td md-cell="md-cell">
+            <md-menu>
+              <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
+                <md-icon class="material-icons">more_vert</md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="update(member.id)">
+                    <md-icon class="material-icons">create</md-icon>&nbsp; แก้ไขข้อมูล
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="remove(member.id)">
+                    <md-icon class="material-icons">close</md-icon>&nbsp; ลบรายการ
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</md-content>

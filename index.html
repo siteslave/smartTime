@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="./node_modules/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="./libs/iconfont/material-icons.css">
     <link rel="stylesheet" href="./node_modules/angular-material-data-table/dist/md-data-table.min.css">
-    <title>Material App</title>
+    <link rel="stylesheet" href="./app/css/style.css">
+    <title>Smart Time: Time Attendance System</title>
   </head>
   <body>
    
@@ -19,25 +20,31 @@
                 <md-button aria-label="Main" ng-click="toggleLeft()" ui-sref="main" class="md-icon-button">
                   <md-icon class="material-icons">desktop_windows</md-icon>
                 </md-button>
-                <h2><span>iChare</span></h2>
+                <h2><span>SmartTime</span></h2>
               </div>
             </md-toolbar>
             <md-content>
               <md-subheader>Main Menu
                 <md-menu-content>
                   <md-menu-item>
-                    <md-button ui-sref="users">
-                      <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">person</i></md-icon>ทะเบียนสมาชิก
+                    <md-button ui-sref="employees">
+                      <md-icon md-menu-align-target="md-menu-align-target">
+                        <i class="material-icons">person</i>
+                      </md-icon> ทะเบียนพนักงาน
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
-                    <md-button ui-sref="groups">
-                      <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">group</i></md-icon>ประเภทสมาชิก
+                    <md-button ui-sref="attendances">
+                      <md-icon md-menu-align-target="md-menu-align-target">
+                        <i class="material-icons">access_time</i>
+                      </md-icon> ตารางการปฏิบัติงาน
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
                     <md-button ui-sref="reports">
-                      <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">pie_chart</i></md-icon>รายงาน
+                      <md-icon md-menu-align-target="md-menu-align-target">
+                        <i class="material-icons">pie_chart</i>
+                      </md-icon> สถิติ/รายงาน
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -47,13 +54,24 @@
               <md-subheader>Tools
                 <md-menu-content>
                   <md-menu-item>
+                    <md-button ui-sref="import">
+                      <md-icon md-menu-align-target="md-menu-align-target">
+                        <i class="material-icons">play_for_work</i>
+                      </md-icon> นำเข้าข้อมูล
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item>
                     <md-button ui-sref="settings">
-                      <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">settings</i></md-icon>กำหนดค่าการเชื่อมต่อ
+                      <md-icon md-menu-align-target="md-menu-align-target">
+                        <i class="material-icons">settings</i>
+                      </md-icon> กำหนดค่าการเชื่อมต่อ
                     </md-button>
                   </md-menu-item>
                   <md-menu-item>
                     <md-button href="./login.html">
-                      <md-icon md-menu-align-target="md-menu-align-target"><i class="material-icons">exit_to_app</i></md-icon>ออกจากระบบ
+                      <md-icon md-menu-align-target="md-menu-align-target">
+                        <i class="material-icons">exit_to_app</i>
+                      </md-icon> ออกจากระบบ
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -68,7 +86,7 @@
                 <md-button aria-label="Toggle" ng-click="toggleLeft()" hide-gt-sm="hide-gt-sm" class="md-icon-button">
                   <md-icon class="material-icons">menu</md-icon>
                 </md-button>
-                <h2>Members Management System</h2>
+                <h2>Time Attendance System</h2>
               </div>
             </md-toolbar>
             <div>
@@ -82,30 +100,8 @@
   </body>
 
   <script>
-    require('angular')
-    require('angular-material')
-    require('angular-ui-router')
-    require('angular-animate')
-    require('angular-aria')
-    require('angular-messages')
-    require('angular-material-data-table')
 
-    window.Highcharts = require('highcharts')
-    require('./node_modules/highcharts-ng/dist/highcharts-ng.min.js')
-    
-    require('./renderer.js')
-    require('./controllers/sidenav.js')
-    require('./controllers/toolbar.js')
-    require('./controllers/main.js')
-    require('./controllers/users.js')
-    require('./controllers/settings.js')
-    require('./controllers/groups.js')
-    require('./controllers/add-member-dialog.js')
-    require('./controllers/update-member-dialog.js')
-    require('./controllers/reports.js')
+    require('./app/js/renderer.js')
 
-    require('./services/users.js')
-    require('./services/connection.js')
-    
   </script>
 </html>

@@ -1,0 +1,31 @@
+<form name="frmLogin">
+    <md-card md-theme-watch>
+        <md-card-title>
+            <md-card-title-text>
+            <span class="md-headline">Please login</span>
+            <span class="md-subhead">Enter username and password</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div layout="column">
+            <div flex>
+                <md-input-container class="md-block">
+                <label>Username</label>
+                <input ng-model="username" ng-required="true">
+                </md-input-container>
+            </div>
+            <div flex>
+                <md-input-container class="md-block">
+                <label>Password</label>
+                <input type="password" ng-model="password" ng-required="true">
+                </md-input-container>
+            </div>
+            </div>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-raised md-primary" ng-click="Login()" ng-disabled="frmLogin.$invalid">Login</md-button>
+            <md-button class="md-raised md-primary" href="#/settings">Settings</md-button>
+            <md-button class="md-warn" ng-click="Exit()">Close</md-button>
+        </md-card-actions>
+    </md-card>
+</form>

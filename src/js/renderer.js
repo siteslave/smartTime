@@ -1,6 +1,36 @@
 
 var moment = require('moment');
 
+require('angular')
+require('angular-material')
+require('angular-ui-router')
+require('angular-animate')
+require('angular-aria')
+require('angular-messages')
+require('angular-material-data-table')
+
+window.Highcharts = require('highcharts')
+require('../../node_modules/highcharts-ng/dist/highcharts-ng.min.js')
+
+
+require('./controllers/sidenav.js')
+require('./controllers/toolbar.js')
+require('./controllers/main.js')
+require('./controllers/users.js')
+require('./controllers/imports.js')
+require('./controllers/settings.js')
+require('./controllers/attendances.js')
+require('./controllers/add-member-dialog.js')
+require('./controllers/update-member-dialog.js')
+require('./controllers/reports.js')
+require('./controllers/employees.js')
+
+require('./services/users.js')
+require('./services/import.js')
+require('./services/connection.js')
+require('./services/employee.js')
+
+
 angular.module('app', [
   'ui.router',
   'ngMaterial',
@@ -11,12 +41,15 @@ angular.module('app', [
   'app.controllers.Main',
   'app.controllers.Settings',
   'app.controllers.Users',
-  'app.controllers.Groups',
+  'app.controllers.Imports',
+  'app.controllers.Attendances',
   'app.services.Users',
   'app.services.Connnection',
   'app.controllers.AddMemberDialog',
   'app.controllers.UpdateMemberDialog',
-  'app.controllers.Reports'
+  'app.controllers.Reports',
+  'app.services.Employee',
+  'app.controllers.Employees'
 ])
 
   .config(function ($stateProvider, $urlRouterProvider,
@@ -56,15 +89,20 @@ angular.module('app', [
         templateUrl: './templates/main.html',
         controller: 'MainCtrl'
       })
-      .state('users', {
-        url: '/users',
-        templateUrl: './templates/users.html',
-        controller: 'UsersCtrl'
+      .state('employees', {
+        url: '/employees',
+        templateUrl: './templates/employees.html',
+        controller: 'EmployeesCtrl'
       })
-      .state('groups', {
-        url: '/groups',
-        templateUrl: './templates/groups.html',
-        controller: 'GroupsCtrl'
+      .state('import', {
+        url: '/import',
+        templateUrl: './templates/import.html',
+        controller: 'ImportCtrl'
+      })
+      .state('attendances', {
+        url: '/attendances',
+        templateUrl: './templates/attendances.html',
+        controller: 'AttendancesCtrl'
       })
       .state('reports', {
         url: '/reports',

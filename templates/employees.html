@@ -1,0 +1,71 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools"><i class="material-icons">settings</i>
+    <h2>&nbsp; นำเข้าข้อมูล (Import Data)</h2><span flex="flex"></span>
+  </div>
+</md-toolbar>
+
+<md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
+
+<md-content layout-padding>
+    <div layout-gt-xs="row">
+        <md-input-container class="md-block" flex-gt-xs>
+          <label>ระบุชื่อ หรือ รหัส เพื่อค้นหา...</label>
+          <input ng-model="searchQuery">
+        </md-input-container>
+        <md-input-container>
+          <md-button class="md-raised md-primary" ng-click="search()">ค้นหา</md-button>
+        </md-input-container>
+      </div>
+  <div layout="row">
+    <div flex>
+      <md-table-container>
+        <table md-table>
+          <thead md-head>
+            <tr md-row>
+              <th md-column md-numeric>รหัส</th> 
+              <th md-column>ชื่อ-สกุล</th>
+              <th md-column>ตำแหน่ง</th>
+              <th md-column>สังกัด</th>
+              <th md-column></th>
+            </tr>
+          </thead>
+          <tbody md-body>
+            <tr md-row ng-if="!employees.length">
+              <td md-cell colspan="5"> ไม่พบรายการ </td>
+            </tr>
+            <tr md-row ng-repeat="e in employees" ng-if="employees.length">
+              <td md-cell>{{ e.employee_code }}</td>
+              <td md-cell>{{ e.title_name }}{{ e.first_name }} {{ e.last_name }}</td>
+              <td md-cell>{{ e.position_name }}</td>
+              <td md-cell>{{ e.department_name }}</td>
+              <td md-cell>
+                <md-menu>
+                  <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
+                    <md-icon class="material-icons">more_vert</md-icon>
+                  </md-button>
+                  <md-menu-content width="4">
+                    <md-menu-item>
+                      <md-button ng-click="remove($event, e)">
+                        <md-icon class="material-icons">delete_sweep</md-icon>
+                        ลบรายการ
+                      </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-table-pagination 
+        md-limit="query.limit" 
+        md-page="query.page" 
+        md-total="{{ total }}"
+        md-on-paginate="onPaginate"
+        md-options="[5, 20, 30, 50]"
+        md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}"
+        md-page-select, ng-if="showPaging">
+    </div>
+  </div>
+
+</md-content>

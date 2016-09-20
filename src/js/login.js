@@ -1,12 +1,32 @@
+'use strict';
 
 var {app} = require('electron').remote
 var _crypto = require('crypto')
 
-angular.module('app', ['ngMaterial', 'app.services.Connnection'])
-  .config(function ($mdThemingProvider) {
+angular.module('app', [
+  'ngMaterial', 'ui.router',
+  'app.services.Connnection',
+  'app.controllers.Settings'
+])
+  .config(function ($mdThemingProvider, $stateProvider, $urlRouterProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('pink')
       .accentPalette('orange');
+    
+    $urlRouterProvider.otherwise('/login');
+
+    $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: './templates/login.html',
+        controller: 'LoginCtrl'
+      })
+      .state('settings', {
+        url: '/settings',
+        templateUrl: './templates/settings-login.html',
+        controller: 'SettingsCtrl'
+      });
+
   })
   .controller('LoginCtrl', function ($scope, Connection, LoginService) {
 
@@ -31,11 +51,12 @@ angular.module('app', ['ngMaterial', 'app.services.Connnection'])
     }
     
   })
-  .factory('LoginService', function ($q) {
+ 
+  .factory('LoginService', ($q) => {
     return {
       doLogin: function (db, username, password) {
         var q = $q.defer();
-        db('test_members')
+        db('admin')
           .where('username', username)
           .where('password', password)
           .count('* as total')

@@ -1,0 +1,44 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools"><i class="material-icons">settings</i>
+    <h2>&nbsp; นำเข้าข้อมูล (Import Data)</h2><span flex="flex"></span>
+  </div>
+</md-toolbar>
+
+<md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
+
+<md-content layout-padding>
+    <div layout-gt-xs="row">
+        <md-input-container class="md-block" flex-gt-xs>
+          <label>ที่อยู่ของไฟล์</label>
+          <input ng-model="targetName" ng-disabled="true">
+        </md-input-container>
+        <md-input-container>
+          <md-button class="md-icon-button" aria-label="Browse" ng-click="openTarget()">
+            <md-icon class="material-icons">folder</md-icon>
+          </md-button>
+        </md-input-container>
+        <md-input-container>
+          <label>ตั้งแต่วันที่</label>
+          <md-datepicker ng-model="startDate"></md-datepicker>
+        </md-input-container>
+        <md-input-container>
+          <label>ถึงวันที่</label>
+          <md-datepicker ng-model="endDate"></md-datepicker>
+        </md-input-container>
+        <md-input-container>
+          <md-radio-group ng-model="importEncoding">
+            <md-radio-button value="UCS2" class="md-primary">UCS2</md-radio-button>
+            <md-radio-button value="UTF8">UTF8 </md-radio-button>
+          </md-radio-group>
+        </md-input-container>
+        <md-input-container>
+          <md-button class="md-raised md-primary" ng-click="doImport()">นำเข้า</md-button>
+        </md-input-container>
+      </div>
+  <div layout="row">
+    <div flex>
+      
+    </div>
+  </div>
+
+</md-content>
