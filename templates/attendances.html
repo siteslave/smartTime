@@ -27,7 +27,7 @@
       </md-input-container>
 
       <md-input-container>
-        <md-button class="md-raised md-primary" ng-click="doImport()">แสดง</md-button>
+        <md-button class="md-raised md-primary" ng-click="initial()">แสดง</md-button>
       </md-input-container>
   </div>
   &nbsp;
@@ -37,8 +37,6 @@
         <tr md-row="md-row">
           <th md-column="md-column">#</th>
           <th md-column="md-column">ชื่อ - สกุล</th>
-          <th md-column="md-column">แผนก</th>
-          <th md-column="md-column">สถานะ</th>
           <th md-column="md-column">เข้า</th>
           <th md-column="md-column">ออก</th>
           <th md-column="md-column">หมายเหตุ</th>
@@ -46,18 +44,19 @@
         </tr>
       </thead>
       <tbody md-body="md-body">
-        <tr md-row="md-row" ng-if="!members.length">
-          <td md-cell="md-cell" colspan="8">ไม่พบรายการ</td>
+        <tr md-row="md-row" ng-if="!employees.length">
+          <td md-cell="md-cell" colspan="6">ไม่พบรายการ</td>
         </tr>
-        <tr md-row="md-row" ng-repeat="member in members" ng-if="members.length">
-          <td md-cell="md-cell">{{ member.id }}</td>
-          <td md-cell="md-cell">{{ member.username }}</td>
-          <td md-cell="md-cell">{{ member.fullname }}</td>
-          <td md-cell="md-cell">{{ member.group_name }}</td>
+        <tr md-row="md-row" ng-repeat="e in employees" ng-if="employees.length">
+          <td md-cell="md-cell">{{ e.employee_code }}</td>
+          <td md-cell="md-cell">{{ e.fullname }}</td>
+          <td md-cell="md-cell">{{ e.start }}</td>
+          <td md-cell="md-cell">{{ e.end }}</td>
+          <td md-cell="md-cell">{{ e.group_name }}</td>
           <td md-cell="md-cell">
             <md-menu>
               <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
-                <md-icon class="material-icons">more_vert</md-icon>
+                <md-icon class="material-icons">dialpad</md-icon>
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
@@ -77,4 +76,12 @@
       </tbody>
     </table>
   </md-table-container>
+  <md-table-pagination 
+        md-limit="query.limit" 
+        md-page="query.page" 
+        md-total="{{ total }}"
+        md-on-paginate="onPaginate"
+        md-options="[5, 20, 30, 50]"
+        md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}"
+        md-page-select, ng-if="showPaging">
 </md-content>

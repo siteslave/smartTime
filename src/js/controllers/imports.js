@@ -42,16 +42,18 @@ angular.module('app.controllers.Imports', ['app.services.Import'])
         _data.forEach((v, i) => {
           if (v) {
             let arrItem = v.toString().split("\t");
-            let obj = {
-              checkin_date: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('YYYY-MM-DD'),
-              checkin_time: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('HH:mm:ss'),
-              employee_code: arrItem[2],
-              imported_date: moment().format('YYYY-MM-DD HH:mm:ss')
-            };
+            if (parseInt(arrItem[2])) {
+              let obj = {
+                checkin_date: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('YYYY-MM-DD'),
+                checkin_time: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('HH:mm:ss'),
+                employee_code: parseInt(arrItem[2]),
+                imported_date: moment().format('YYYY-MM-DD HH:mm:ss')
+              };
 
-            let isBetween = moment(obj.checkin_date).isBetween(startDate, endDate, null, '[]');
-            if (isBetween) {
-              items.push(obj);
+              let isBetween = moment(obj.checkin_date).isBetween(startDate, endDate, null, '[]');
+              if (isBetween) {
+                items.push(obj);
+              }
             }
           }
 
@@ -66,7 +68,7 @@ angular.module('app.controllers.Imports', ['app.services.Import'])
                   .parent(angular.element(document.querySelector('#popupContainer')))
                   .clickOutsideToClose(true)
                   .title('ผลการนำเข้า')
-                  .textContent('นำเข้าข้อมูลเสร็จเรียบร้อย จำนวน ' + _data.length + ' รายการ')
+                  .textContent('นำเข้าข้อมูลเสร็จเรียบร้อย จำนวน ' + items.length + ' รายการ')
                   .ariaLabel('Alert')
                   .ok('ตกลง')
               );

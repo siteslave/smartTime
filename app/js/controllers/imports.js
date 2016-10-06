@@ -41,16 +41,18 @@ angular.module('app.controllers.Imports', ['app.services.Import']).controller('I
     _data.forEach(function (v, i) {
       if (v) {
         var arrItem = v.toString().split("\t");
-        var obj = {
-          checkin_date: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('YYYY-MM-DD'),
-          checkin_time: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('HH:mm:ss'),
-          employee_code: arrItem[2],
-          imported_date: moment().format('YYYY-MM-DD HH:mm:ss')
-        };
+        if (parseInt(arrItem[2])) {
+          var obj = {
+            checkin_date: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('YYYY-MM-DD'),
+            checkin_time: moment(arrItem[8], 'YYYY/MM/DD HH:mm:ss').format('HH:mm:ss'),
+            employee_code: parseInt(arrItem[2]),
+            imported_date: moment().format('YYYY-MM-DD HH:mm:ss')
+          };
 
-        var isBetween = moment(obj.checkin_date).isBetween(startDate, endDate, null, '[]');
-        if (isBetween) {
-          items.push(obj);
+          var isBetween = moment(obj.checkin_date).isBetween(startDate, endDate, null, '[]');
+          if (isBetween) {
+            items.push(obj);
+          }
         }
       }
     });
@@ -58,7 +60,7 @@ angular.module('app.controllers.Imports', ['app.services.Import']).controller('I
     if (items.length) {
       ImportService.doImport(db, items).then(function () {
         $scope.showLoading = false;
-        $mdDialog.show($mdDialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('ผลการนำเข้า').textContent('นำเข้าข้อมูลเสร็จเรียบร้อย จำนวน ' + _data.length + ' รายการ').ariaLabel('Alert').ok('ตกลง'));
+        $mdDialog.show($mdDialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('ผลการนำเข้า').textContent('นำเข้าข้อมูลเสร็จเรียบร้อย จำนวน ' + items.length + ' รายการ').ariaLabel('Alert').ok('ตกลง'));
       }, function (err) {
         $scope.showLoading = false;
         $mdDialog.show($mdDialog.alert().parent(angular.element(document.querySelector('#popupContainer'))).clickOutsideToClose(true).title('ผลการนำเข้า').textContent('เกิดข้อผิดพลาด : ' + JSON.stringify(err)).ariaLabel('Alert').ok('ตกลง'));

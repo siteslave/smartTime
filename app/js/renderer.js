@@ -29,6 +29,7 @@ require('./services/users.js');
 require('./services/import.js');
 require('./services/connection.js');
 require('./services/employee.js');
+require('./services/attendance.js');
 
 angular.module('app', ['ui.router', 'ngMaterial', 'md.data.table', 'highcharts-ng', 'app.controllers.Sidenav', 'app.controllers.Toolbar', 'app.controllers.Main', 'app.controllers.Settings', 'app.controllers.Users', 'app.controllers.Imports', 'app.controllers.Attendances', 'app.services.Users', 'app.services.Connnection', 'app.controllers.AddMemberDialog', 'app.controllers.UpdateMemberDialog', 'app.controllers.Reports', 'app.services.Employee', 'app.controllers.Employees']).config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider, $mdDateLocaleProvider) {
 

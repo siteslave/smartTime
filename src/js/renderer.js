@@ -1,5 +1,4 @@
-
-var moment = require('moment');
+let moment = require('moment');
 
 require('angular')
 require('angular-material')
@@ -11,7 +10,6 @@ require('angular-material-data-table')
 
 window.Highcharts = require('highcharts')
 require('../../node_modules/highcharts-ng/dist/highcharts-ng.min.js')
-
 
 require('./controllers/sidenav.js')
 require('./controllers/toolbar.js')
@@ -29,6 +27,7 @@ require('./services/users.js')
 require('./services/import.js')
 require('./services/connection.js')
 require('./services/employee.js')
+require('./services/attendance.js')
 
 
 angular.module('app', [
