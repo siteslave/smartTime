@@ -1,33 +1,26 @@
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools"><i class="material-icons">group</i>
-    <h2>&nbsp; ตารางการปฎิบัติงาน (Attendances)</h2><span flex="flex"></span>
+    <h2>&nbsp; ข้อมูลการลงเวลาปฎิบัติงาน</h2><span flex="flex"></span>
   </div>
 </md-toolbar>
 
 <md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
-<md-button aria-label="Add" ng-click="showAddMember($event)" class="md-fab md-fab-bottom-right">
-  <md-icon class="material icons">cloud_download</md-icon>
-</md-button>
-
 <md-content layout-padding>
   <div layout-gt-xs="row" style="background-color: white;">
       <md-input-container class="md-block" flex-gt-xs>
         <label>รหัสพนักงาน</label>
-        <input ng-model="targetName">
-      </md-input-container>
-      <md-input-container>
-        <md-button class="md-icon-button" aria-label="Search" ng-click="openTarget()">
-          <md-icon class="material-icons">search</md-icon>
-        </md-button>
+        <input ng-model="queryEmployee">
       </md-input-container>
       &nbsp;&nbsp;&nbsp;
       <md-input-container>
         <label>วันที่</label>
         <md-datepicker ng-model="workDate"></md-datepicker>
       </md-input-container>
-
       <md-input-container>
-        <md-button class="md-raised md-primary" ng-click="initial()">แสดง</md-button>
+        <md-button class="md-raised md-primary" ng-disabled="showLoading" ng-click="getList()">แสดง</md-button>
+      </md-input-container>
+      <md-input-container>
+        <md-button class="md-raised md-primary" ng-disabled="!attendances.length" ng-click="exportExcel()">ส่งออก</md-button>
       </md-input-container>
   </div>
   &nbsp;
@@ -36,23 +29,23 @@
       <thead md-head="md-head">
         <tr md-row="md-row">
           <th md-column="md-column">#</th>
+          <th md-column="md-column">รหัส</th>
           <th md-column="md-column">ชื่อ - สกุล</th>
           <th md-column="md-column">เข้า</th>
           <th md-column="md-column">ออก</th>
-          <th md-column="md-column">หมายเหตุ</th>
           <th md-column="md-column"></th>
         </tr>
       </thead>
       <tbody md-body="md-body">
-        <tr md-row="md-row" ng-if="!employees.length">
+        <tr md-row="md-row" ng-if="!attendances.length">
           <td md-cell="md-cell" colspan="6">ไม่พบรายการ</td>
         </tr>
-        <tr md-row="md-row" ng-repeat="e in employees" ng-if="employees.length">
+        <tr md-row="md-row" ng-repeat="e in attendances | filter: queryEmployee" ng-if="attendances.length">
+          <td md-cell="md-cell">{{ $index+1 }}</td>
           <td md-cell="md-cell">{{ e.employee_code }}</td>
           <td md-cell="md-cell">{{ e.fullname }}</td>
-          <td md-cell="md-cell">{{ e.start }}</td>
-          <td md-cell="md-cell">{{ e.end }}</td>
-          <td md-cell="md-cell">{{ e.group_name }}</td>
+          <td md-cell="md-cell">{{ e.start_time }}</td>
+          <td md-cell="md-cell">{{ e.end_time }}</td>
           <td md-cell="md-cell">
             <md-menu>
               <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
@@ -60,13 +53,8 @@
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
-                  <md-button ng-click="update(member.id)">
-                    <md-icon class="material-icons">create</md-icon>&nbsp; แก้ไขข้อมูล
-                  </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="remove(member.id)">
-                    <md-icon class="material-icons">close</md-icon>&nbsp; ลบรายการ
+                  <md-button ng-click="showCoverage($event, e)">
+                    <md-icon class="material-icons">printer</md-icon>&nbsp; ข้อมูลลงเวลาที่ยังไม่ประมวลผล
                   </md-button>
                 </md-menu-item>
               </md-menu-content>
@@ -76,12 +64,3 @@
       </tbody>
     </table>
   </md-table-container>
-  <md-table-pagination 
-        md-limit="query.limit" 
-        md-page="query.page" 
-        md-total="{{ total }}"
-        md-on-paginate="onPaginate"
-        md-options="[5, 20, 30, 50]"
-        md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}"
-        md-page-select, ng-if="showPaging">
-</md-content>

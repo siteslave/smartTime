@@ -1,98 +1,128 @@
 'use strict';
 
 var moment = require('moment');
+var json2xls = require('json2xls');
 
-angular.module('app.controllers.Reports', []).controller('ReportsCtrl', function ($scope, UsersService, Connection) {
+var _require$remote = require('electron').remote,
+    shell = _require$remote.shell,
+    app = _require$remote.app;
+
+var path = require('path');
+var fs = require('fs');
+
+angular.module('app.controllers.Reports', []).controller('ReportsCtrl', function ($scope, $rootScope, $mdDialog, ReportService, Connection) {
 
   var db = Connection.getConnection();
+  $scope.attendances = [];
 
-  $scope.chart1 = {
-    options: {
-      chart: {
-        type: 'bar'
-      }
-    },
-    xAxis: {
-      categories: [],
-      title: {
-        text: null
-      }
-    },
-    series: [{
-      name: 'จำนวน',
-      data: []
-    }],
-    title: {
-      text: 'จำนวนสมาชิก'
-    },
+  $scope.startDate = new Date(moment().startOf('month').format());
+  $scope.endDate = new Date(moment().endOf('month').format());
 
-    loading: false
+  $scope.openMenu = function ($mdOpenMenu, ev) {
+    $mdOpenMenu(ev);
   };
 
-  $scope.chart2 = {
-    options: {
-      chart: {
-        type: 'column'
-      }
-    },
-    xAxis: {
-      categories: [],
-      title: {
-        text: 'จำนวน (ครั้ง)'
-      }
-    },
-    yAxis: {
-      title: {
-        text: 'จำนวน (ครั้ง)'
-      }
-    },
-    series: [{
-      name: 'ครั้ง',
-      data: []
-    }],
-    title: {
-      text: 'ปริมาณการจ่ายยา'
-    },
-
-    loading: false
-  };
-
-  $scope.showLoading = true;
-
-  UsersService.getReportsMembers(db).then(function (rows) {
-    console.log(rows);
-    rows.forEach(function (v) {
-      // v = {group_name: 'xx', total: 4}
-      $scope.chart1.xAxis.categories.push(v.group_name);
-      $scope.chart1.series[0].data.push(v.total);
-    });
-
-    $scope.showLoading = false;
-  }, function (err) {
-    $scope.showLoading = false;
-  });
-
-  // report drugs
-
-  $scope.showReport = function () {
-    // YYYY-MM-DD
-    var start = moment($scope.start).format('YYYY-MM-DD');
-    var end = moment($scope.end).format('YYYY-MM-DD');
+  $scope.getWorkLate = function () {
 
     $scope.showLoading = true;
+    var start = moment($scope.startDate).format('YYYY-MM-DD');
+    var end = moment($scope.endDate).format('YYYY-MM-DD');
 
-    UsersService.getReportsDrug(db, start, end).then(function (rows) {
-      console.log(rows);
-      rows.forEach(function (v) {
-        // v = {DNAME: 'xx', total: 4}
-        $scope.chart2.xAxis.categories.push(v.DNAME);
-        $scope.chart2.series[0].data.push(v.total);
-      });
-
+    ReportService.getEmployeeWorkLate(db, start, end).then(function (rows) {
+      $scope.attendances = rows;
       $scope.showLoading = false;
     }, function (err) {
-      console.log(err);
       $scope.showLoading = false;
+      alert(JSON.stringify(err));
+    });
+  };
+
+  $scope.exportExcel = function () {
+    if ($scope.attendances) {
+      (function () {
+
+        var exportPath = app.getPath('temp');
+        var filePath = path.join(exportPath, 'export-worklate.xlsx');
+        var xls = json2xls($scope.attendances, {
+          fields: ['employee_code', 'fullname', 'department_name', 'work_total', 'late_total', 'exit_total', 'notexit_total']
+        });
+        fs.writeFile(filePath, xls, 'binary', function (err) {
+          if (err) {
+            alert(err);
+          } else {
+            console.log(filePath);
+            shell.openItem(filePath);
+          }
+        });
+      })();
+    } else {
+      alert('ไม่พบข้อมูลที่ต้องการส่งออก');
+    }
+  };
+
+  $scope.showWorklateDetail = function (ev, employee) {
+    var start = moment($scope.startDate).format('YYYY-MM-DD');
+    var end = moment($scope.endDate).format('YYYY-MM-DD');
+
+    $rootScope.employee_code = employee.employee_code;
+    $rootScope.start = start;
+    $rootScope.end = end;
+    $rootScope.type = 'late';
+
+    $mdDialog.show({
+      controller: 'DialogReportWorkLoadDetail',
+      templateUrl: './templates/dialog-report-worklate-detail.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    }).then(function () {
+      //$scope.status = 'You said the information was "' + answer + '".';
+    }, function () {
+      //$scope.status = 'You cancelled the dialog.';
+    });
+  };
+
+  $scope.showExitDetail = function (ev, employee) {
+    var start = moment($scope.startDate).format('YYYY-MM-DD');
+    var end = moment($scope.endDate).format('YYYY-MM-DD');
+
+    $rootScope.employee_code = employee.employee_code;
+    $rootScope.start = start;
+    $rootScope.end = end;
+    $rootScope.type = 'exit';
+
+    $mdDialog.show({
+      controller: 'DialogReportWorkLoadDetail',
+      templateUrl: './templates/dialog-report-worklate-detail.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    }).then(function () {
+      //$scope.status = 'You said the information was "' + answer + '".';
+    }, function () {
+      //$scope.status = 'You cancelled the dialog.';
+    });
+  };
+
+  $scope.showNotExitDetail = function (ev, employee) {
+    var start = moment($scope.startDate).format('YYYY-MM-DD');
+    var end = moment($scope.endDate).format('YYYY-MM-DD');
+
+    $rootScope.employee_code = employee.employee_code;
+    $rootScope.start = start;
+    $rootScope.end = end;
+    $rootScope.type = 'notExit';
+
+    $mdDialog.show({
+      controller: 'DialogReportWorkLoadDetail',
+      templateUrl: './templates/dialog-report-worklate-detail.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    }).then(function () {
+      //$scope.status = 'You said the information was "' + answer + '".';
+    }, function () {
+      //$scope.status = 'You cancelled the dialog.';
     });
   };
 });

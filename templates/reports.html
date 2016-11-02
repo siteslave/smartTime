@@ -7,25 +7,91 @@
 <md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
 
 <md-content layout-padding>
-  <highchart config="chart1"></highchart>
+  <div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="สรุปการสแกนลายนิ้วมือ">
+        <md-content class="md-padding">
+           <div layout-gt-xs="row" style="background-color: white;">
+      <md-input-container>
+        <label>จากวันที่</label>
+        <md-datepicker ng-model="startDate"></md-datepicker>
+      </md-input-container>
+      <md-input-container>
+        <label>ถึงวันที่</label>
+        <md-datepicker ng-model="endDate"></md-datepicker>
+      </md-input-container>
 
-  <div layout="row">
-    <div flex="25">
-      <label for="">วันที่เริ่มต้น</label>
-      <md-datepicker ng-model="start" md-placeholder="Enter date"></md-datepicker>
-    </div>
-    <div flex="25">
-      <label for="">วันที่สิ้นสุด</label>
-      <md-datepicker ng-model="end" md-placeholder="Enter date"></md-datepicker>
-    </div>
-    <div flex="20">
-      <br>
-      <md-button class="md-raised md-primary" ng-click="showReport()">แสดงรายงาน</md-button>
-    </div>
+      <md-input-container>
+        <md-button class="md-raised md-primary" ng-disabled="showLoading" ng-click="getWorkLate()">ประมวลผล</md-button>
+      </md-input-container>
+
+      <md-input-container>
+        <md-button class="md-raised md-primary" ng-disabled="!attendances.length" ng-click="exportExcel()">ส่งออก</md-button>
+      </md-input-container>
   </div>
-  <div layout="row">
-    <div flex>
-      <highchart config="chart2"></highchart>
-    </div>
-  </div>
+
+    &nbsp;
+  <md-table-container style="background-color: white;">
+    <table md-table="md-table">
+      <thead md-head="md-head">
+        <tr md-row="md-row">
+          <th md-column="md-column">#</th>
+          <!--<th md-column="md-column">รหัส</th>-->
+          <th md-column="md-column">ชื่อ-สกุล</th>
+          <th md-column="md-column">หน่วยงาน</th>
+          <th md-column="md-column">ทั้งหมด</th>
+          <th md-column="md-column">สาย</th>
+          <th md-column="md-column">ออกก่อน</th>
+          <th md-column="md-column">ไม่ลงออก</th>
+          <th md-column="md-column"></th>
+        </tr>
+      </thead>
+      <tbody md-body="md-body">
+        <tr md-row="md-row" ng-if="!attendances.length">
+          <td md-cell="md-cell" colspan="8">ไม่พบรายการ</td>
+        </tr>
+        <tr md-row="md-row" ng-repeat="e in attendances" ng-if="attendances.length">
+          <td md-cell="md-cell">{{ $index + 1 }}</td>
+          <!--<td md-cell="md-cell">{{ e.employee_code }}</td>-->
+          <td md-cell="md-cell">{{ e.fullname }}</td>
+          <td md-cell="md-cell">{{ e.department_name }}</td>
+          <td md-cell="md-cell">{{ e.work_total | number }}</td>
+          <td md-cell="md-cell">{{ e.late_total | number }}</td>
+          <td md-cell="md-cell">{{ e.exit_total | number }}</td>
+          <td md-cell="md-cell">{{ e.notexit_total | number }}</td>
+          <td md-cell="md-cell">
+            <md-menu>
+              <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
+                <md-icon class="material-icons">dialpad</md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-disabled="!e.late_total" ng-click="showWorklateDetail($event, e)">
+                    <md-icon class="material-icons">search</md-icon>&nbsp; วันที่มาสาย
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-disabled="!e.exit_total" ng-click="showExitDetail($event, e)">
+                    <md-icon class="material-icons">search</md-icon>&nbsp; วันที่ออกก่อน
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-disabled="!e.notexit_total" ng-click="showNotExitDetail($event, e)">
+                    <md-icon class="material-icons">search</md-icon>&nbsp; วันที่ไม่สแกนออก
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
+
 </md-content>

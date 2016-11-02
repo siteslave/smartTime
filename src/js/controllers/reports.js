@@ -1,103 +1,136 @@
 
 var moment = require('moment')
+let json2xls = require('json2xls');
+const {shell, app} = require('electron').remote;
+
+let path = require('path');
+let fs = require('fs');
 
 angular.module('app.controllers.Reports', [])
 
-  .controller('ReportsCtrl', function ($scope, UsersService, Connection) {
+  .controller('ReportsCtrl', function ($scope, $rootScope, $mdDialog, ReportService, Connection) {
   
-    var db = Connection.getConnection();
-
-    $scope.chart1 = {
-      options: {
-        chart: {
-          type: 'bar'
-        }
-      },
-      xAxis: {
-          categories: [],
-          title: {
-              text: null
-          }
-      },
-      series: [{
-        name: 'จำนวน',
-        data: []
-      }],
-      title: {
-        text: 'จำนวนสมาชิก'
-      },
-
-      loading: false
-    };
-
-    $scope.chart2 = {
-      options: {
-        chart: {
-          type: 'column'
-        }
-      },
-      xAxis: {
-          categories: [],
-          title: {
-              text: 'จำนวน (ครั้ง)'
-          }
-      },
-      yAxis: {
-          title: {
-              text: 'จำนวน (ครั้ง)'
-          }
-      },
-      series: [{
-        name: 'ครั้ง',
-        data: []
-      }],
-      title: {
-        text: 'ปริมาณการจ่ายยา'
-      },
-
-      loading: false
-    };
-
-    $scope.showLoading = true;
-
-    UsersService.getReportsMembers(db)
-      .then(function (rows) {
-        console.log(rows);
-        rows.forEach(function (v) { // v = {group_name: 'xx', total: 4}
-          $scope.chart1.xAxis.categories.push(v.group_name);
-          $scope.chart1.series[0].data.push(v.total);
-        });
-
-        $scope.showLoading = false;
-        
-      }, function (err) {
-        $scope.showLoading = false;
-      });
+    let db = Connection.getConnection();
+    $scope.attendances = [];
     
-
-    // report drugs
-
-    $scope.showReport = function () {
-      // YYYY-MM-DD
-      var start = moment($scope.start).format('YYYY-MM-DD')
-      var end = moment($scope.end).format('YYYY-MM-DD')
+    $scope.startDate = new Date(moment().startOf('month').format());
+    $scope.endDate = new Date(moment().endOf('month').format());
+    
+    $scope.openMenu = ($mdOpenMenu, ev) => {
+      $mdOpenMenu(ev);
+    };
+    
+    $scope.getWorkLate = () => {
 
       $scope.showLoading = true;
-      
-      UsersService.getReportsDrug(db, start, end)
-        .then(function (rows) {
-          console.log(rows);
-          rows.forEach(function (v) { // v = {DNAME: 'xx', total: 4}
-            $scope.chart2.xAxis.categories.push(v.DNAME);
-            $scope.chart2.series[0].data.push(v.total);
-          });
-          
+      let start = moment($scope.startDate).format('YYYY-MM-DD');
+      let end = moment($scope.endDate).format('YYYY-MM-DD');
+
+      ReportService.getEmployeeWorkLate(db, start, end)
+        .then(rows => {
+          $scope.attendances = rows;
           $scope.showLoading = false;
-        }, function (err) {
-          console.log(err)
+        }, err => {
           $scope.showLoading = false;
+          alert(JSON.stringify(err));
         });
       
     }
+
+    $scope.exportExcel = () => {
+      if ($scope.attendances) {
+
+        let exportPath = app.getPath('temp');
+        let filePath = path.join(exportPath, 'export-worklate.xlsx')
+        let xls = json2xls($scope.attendances, {
+          fields: [
+            'employee_code', 'fullname', 'department_name',
+            'work_total', 'late_total', 'exit_total', 'notexit_total'
+          ]
+        });
+        fs.writeFile(filePath, xls, 'binary', (err) => {
+          if (err) {
+            alert(err);
+          } else {
+            console.log(filePath)
+            shell.openItem(filePath);
+          }
+        });
+       
+
+      } else {
+        alert('ไม่พบข้อมูลที่ต้องการส่งออก')
+      }
+    };
+
+    $scope.showWorklateDetail = (ev, employee) => {
+       let start = moment($scope.startDate).format('YYYY-MM-DD');
+       let end = moment($scope.endDate).format('YYYY-MM-DD');
+      
+        $rootScope.employee_code = employee.employee_code;
+        $rootScope.start = start;
+        $rootScope.end = end;
+        $rootScope.type = 'late';
+      
+        $mdDialog.show({
+          controller: 'DialogReportWorkLoadDetail',
+          templateUrl: './templates/dialog-report-worklate-detail.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true
+        })
+          .then(function () {
+            //$scope.status = 'You said the information was "' + answer + '".';
+          }, function () {
+            //$scope.status = 'You cancelled the dialog.';
+          });
+    }
+
+    $scope.showExitDetail = (ev, employee) => {
+       let start = moment($scope.startDate).format('YYYY-MM-DD');
+       let end = moment($scope.endDate).format('YYYY-MM-DD');
+      
+        $rootScope.employee_code = employee.employee_code;
+        $rootScope.start = start;
+        $rootScope.end = end;
+        $rootScope.type = 'exit';
+        
+        $mdDialog.show({
+          controller: 'DialogReportWorkLoadDetail',
+          templateUrl: './templates/dialog-report-worklate-detail.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true
+        })
+          .then(function () {
+            //$scope.status = 'You said the information was "' + answer + '".';
+          }, function () {
+            //$scope.status = 'You cancelled the dialog.';
+          });
+    }
+
+    $scope.showNotExitDetail = (ev, employee) => {
+       let start = moment($scope.startDate).format('YYYY-MM-DD');
+       let end = moment($scope.endDate).format('YYYY-MM-DD');
+      
+        $rootScope.employee_code = employee.employee_code;
+        $rootScope.start = start;
+        $rootScope.end = end;
+        $rootScope.type = 'notExit';
+        
+        $mdDialog.show({
+          controller: 'DialogReportWorkLoadDetail',
+          templateUrl: './templates/dialog-report-worklate-detail.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose: true
+        })
+          .then(function () {
+            //$scope.status = 'You said the information was "' + answer + '".';
+          }, function () {
+            //$scope.status = 'You cancelled the dialog.';
+          });
+    }
+
 
   });

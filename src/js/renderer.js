@@ -18,6 +18,9 @@ require('./controllers/users.js')
 require('./controllers/imports.js')
 require('./controllers/settings.js')
 require('./controllers/attendances.js')
+require('./controllers/attendances-process.js')
+require('./controllers/dialog-attendances-coverage.js')
+require('./controllers/dialog-report-worklate')
 require('./controllers/add-member-dialog.js')
 require('./controllers/update-member-dialog.js')
 require('./controllers/reports.js')
@@ -25,6 +28,7 @@ require('./controllers/employees.js')
 
 require('./services/users.js')
 require('./services/import.js')
+require('./services/reports.js')
 require('./services/connection.js')
 require('./services/employee.js')
 require('./services/attendance.js')
@@ -42,7 +46,11 @@ angular.module('app', [
   'app.controllers.Users',
   'app.controllers.Imports',
   'app.controllers.Attendances',
+  'app.controllers.AttendancesProcess',
+  'app.controllers.Dialog.Attendances.Coverage',
+  'app.controller.Dialogs.ReportDetail',
   'app.services.Users',
+  'app.services.Report',
   'app.services.Connnection',
   'app.controllers.AddMemberDialog',
   'app.controllers.UpdateMemberDialog',
@@ -102,6 +110,11 @@ angular.module('app', [
         url: '/attendances',
         templateUrl: './templates/attendances.html',
         controller: 'AttendancesCtrl'
+      })
+      .state('attendances-process', {
+        url: '/attendances-process',
+        templateUrl: './templates/attendances-process.html',
+        controller: 'AttendancesProcessCtrl'
       })
       .state('reports', {
         url: '/reports',

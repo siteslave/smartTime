@@ -1,0 +1,49 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools"><i class="material-icons">group</i>
+    <h2>&nbsp; ประมวลผลการปฏิบัติงาน</h2><span flex="flex"></span>
+  </div>
+</md-toolbar>
+
+<md-progress-linear md-mode="indeterminate" ng-show="showLoading"></md-progress-linear>
+
+<md-content layout-padding>
+  <div layout-gt-xs="row" style="background-color: white;">
+      <md-input-container>
+        <label>จากวันที่</label>
+        <md-datepicker ng-model="startDate"></md-datepicker>
+      </md-input-container>
+      <md-input-container>
+        <label>ถึงวันที่</label>
+        <md-datepicker ng-model="endDate"></md-datepicker>
+      </md-input-container>
+
+      <md-input-container>
+        <md-button class="md-raised md-primary" ng-disabled="showLoading" ng-click="doProcess()">ประมวลผล</md-button>
+      </md-input-container>
+  </div>
+
+    &nbsp;
+  <md-table-container style="background-color: white;">
+    <table md-table="md-table">
+      <thead md-head="md-head">
+        <tr md-row="md-row">
+          <th md-column="md-column">#</th>
+          <th md-column="md-column">วันที่</th>
+          <th md-column="md-column">เวลา</th>
+        </tr>
+      </thead>
+      <tbody md-body="md-body">
+        <tr md-row="md-row" ng-if="!logs.length">
+          <td md-cell="md-cell" colspan="3">ไม่พบรายการ</td>
+        </tr>
+        <tr md-row="md-row" ng-repeat="e in logs" ng-if="logs.length">
+          <td md-cell="md-cell">{{ $index + 1 }}</td>
+          <td md-cell="md-cell">{{ e.process_date }}</td>
+          <td md-cell="md-cell">{{ e.process_time }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+
+
+ 

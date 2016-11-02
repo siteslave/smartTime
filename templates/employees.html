@@ -26,25 +26,25 @@
               <th md-column>ชื่อ-สกุล</th>
               <th md-column>ตำแหน่ง</th>
               <th md-column>สังกัด</th>
-              <th md-column></th>
+              <!--<th md-column></th>-->
             </tr>
           </thead>
           <tbody md-body>
             <tr md-row ng-if="!employees.length">
-              <td md-cell colspan="5"> ไม่พบรายการ </td>
+              <td md-cell colspan="4"> ไม่พบรายการ </td>
             </tr>
             <tr md-row ng-repeat="e in employees" ng-if="employees.length">
               <td md-cell>{{ e.employee_code }}</td>
               <td md-cell>{{ e.title_name }}{{ e.first_name }} {{ e.last_name }}</td>
               <td md-cell>{{ e.position_name }}</td>
               <td md-cell>{{ e.department_name }}</td>
-              <td md-cell>
+              <!--<td md-cell>
                 <md-menu>
                   <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
                     <md-icon class="material-icons">more_vert</md-icon>
                   </md-button>
                   <md-menu-content width="4">
-                    <md-menu-item>
+                    <md-menu-item disabled>
                       <md-button ng-click="remove($event, e)">
                         <md-icon class="material-icons">delete_sweep</md-icon>
                         ลบรายการ
@@ -52,7 +52,7 @@
                     </md-menu-item>
                   </md-menu-content>
                 </md-menu>
-              </td>
+              </td>-->
             </tr>
           </tbody>
         </table>
