@@ -31,8 +31,8 @@
               <tr md-row="md-row" ng-repeat="e in details" ng-if="details.length">
                 <td md-cell="md-cell">{{ $index + 1 }}</td>
                 <td md-cell="md-cell">{{ e.checkin_date }}</td>
-                <td md-cell="md-cell">{{ e.start_time }}</td>
-                <td md-cell="md-cell">{{ e.end_time }}</td>
+                <td md-cell="md-cell">{{ e.in_time }}</td>
+                <td md-cell="md-cell">{{ e.out_time }}</td>
               </tr>
             </tbody>
           </table>

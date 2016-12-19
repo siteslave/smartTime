@@ -30,7 +30,10 @@
         <md-button class="md-raised md-primary" ng-disabled="!attendances.length" ng-click="exportExcel()">ส่งออก</md-button>
       </md-input-container>
   </div>
-
+      <md-input-container class="md-block" flex-gt-xs>
+        <label>รหัสพนักงาน/ชื่อพนักงาน</label>
+        <input ng-model="queryEmployee">
+      </md-input-container>
     &nbsp;
   <md-table-container style="background-color: white;">
     <table md-table="md-table">
@@ -51,15 +54,15 @@
         <tr md-row="md-row" ng-if="!attendances.length">
           <td md-cell="md-cell" colspan="8">ไม่พบรายการ</td>
         </tr>
-        <tr md-row="md-row" ng-repeat="e in attendances" ng-if="attendances.length">
+        <tr md-row="md-row" ng-repeat="e in attendances | filter: queryEmployee" ng-if="attendances.length">
           <td md-cell="md-cell">{{ $index + 1 }}</td>
           <!--<td md-cell="md-cell">{{ e.employee_code }}</td>-->
           <td md-cell="md-cell">{{ e.fullname }}</td>
           <td md-cell="md-cell">{{ e.department_name }}</td>
-          <td md-cell="md-cell">{{ e.work_total | number }}</td>
-          <td md-cell="md-cell">{{ e.late_total | number }}</td>
-          <td md-cell="md-cell">{{ e.exit_total | number }}</td>
-          <td md-cell="md-cell">{{ e.notexit_total | number }}</td>
+          <td md-cell="md-cell">{{ e.total_work | number }}</td>
+          <td md-cell="md-cell">{{ e.total_late | number }}</td>
+          <td md-cell="md-cell">{{ e.total_exit_before | number }}</td>
+          <td md-cell="md-cell">{{ e.total_not_exit | number }}</td>
           <td md-cell="md-cell">
             <md-menu>
               <md-button aria-label="More" ng-click="openMenu($mdOpenMenu, $event)" class="md-icon-button">
@@ -67,17 +70,22 @@
               </md-button>
               <md-menu-content width="4">
                 <md-menu-item>
-                  <md-button ng-disabled="!e.late_total" ng-click="showWorklateDetail($event, e)">
+                  <md-button ng-click="printSummary($event, e)">
+                    <md-icon class="material-icons">print</md-icon>&nbsp; พิมพ์สรุปการสแกนลายนิ้วมือ
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-disabled="!e.total_late" ng-click="showWorklateDetail($event, e)">
                     <md-icon class="material-icons">search</md-icon>&nbsp; วันที่มาสาย
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button ng-disabled="!e.exit_total" ng-click="showExitDetail($event, e)">
+                  <md-button ng-disabled="!e.total_exit_before" ng-click="showExitDetail($event, e)">
                     <md-icon class="material-icons">search</md-icon>&nbsp; วันที่ออกก่อน
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                  <md-button ng-disabled="!e.notexit_total" ng-click="showNotExitDetail($event, e)">
+                  <md-button ng-disabled="!e.total_not_exit" ng-click="showNotExitDetail($event, e)">
                     <md-icon class="material-icons">search</md-icon>&nbsp; วันที่ไม่สแกนออก
                   </md-button>
                 </md-menu-item>

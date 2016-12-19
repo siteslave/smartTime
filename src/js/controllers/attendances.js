@@ -11,7 +11,7 @@ let fs = require('fs');
 
 angular.module('app.controllers.Attendances', ['app.services.Attendance'])
   .controller('AttendancesCtrl', function ($scope, $mdDialog, $rootScope, Attendance, Connection) {
-    let db = Connection.getConnection();  
+    let db = Connection.getConnection();
     $scope.workDate = new Date(moment().format());
 
     $scope.showLoading = false;
@@ -26,11 +26,11 @@ angular.module('app.controllers.Attendances', ['app.services.Attendance'])
     $scope.getList = () => {
       $scope.showLoading = true;
       let start = moment($scope.workDate).format('YYYY-MM-DD');
-      
+
       $scope.attendances = [];
-      
+
       Attendance.getAttendancesByDate(db, start)
-        .then(rows => { 
+        .then(rows => {
           $scope.attendances = rows;
           $scope.showLoading = false;
         }, err => {
@@ -39,11 +39,11 @@ angular.module('app.controllers.Attendances', ['app.services.Attendance'])
         });
     }
 
-//DialogAttendancesCoverageCtrl    
+//DialogAttendancesCoverageCtrl
     $scope.showCoverage = (ev, employee) => {
       $rootScope.employee_code = employee.employee_code;
       $rootScope.start = moment($scope.workDate).format('YYYY-MM-DD');
-      
+
       $mdDialog.show({
         controller: 'DialogAttendancesCoverageCtrl',
         templateUrl: './templates/dialog-attends-coverage.html',
@@ -65,7 +65,7 @@ angular.module('app.controllers.Attendances', ['app.services.Attendance'])
         let exportPath = app.getPath('temp');
         let filePath = path.join(exportPath, 'export.xlsx')
         let xls = json2xls($scope.attendances, {
-          fields: ['fullname', 'employee_code', 'start_time', 'end_time']
+          fields: ['fullname', 'employee_code', 'in_time', 'out_time']
         });
         fs.writeFile(filePath, xls, 'binary', (err) => {
           if (err) {
@@ -75,13 +75,13 @@ angular.module('app.controllers.Attendances', ['app.services.Attendance'])
             shell.openItem(filePath);
           }
         });
-       
+
 
       } else {
         alert('ไม่พบข้อมูลที่ต้องการส่งออก')
       }
     };
-    
+
     $scope.getList();
 
   });

@@ -17,9 +17,9 @@ angular.module('app.controller.Dialogs.ReportDetail', [])
         .then(rows => {
           rows.forEach(v => {
             let obj = {};
-            obj.checkin_date = moment(v.checkin_date).format('DD/MM') + '/' + (moment(v.checkin_date).get('year') + 543);
-            obj.start_time = v.start_time;
-            obj.end_time = v.end_time;
+            obj.checkin_date = moment(v.date_serve).format('DD/MM') + '/' + (moment(v.date_serve).get('year') + 543);
+            obj.in_time = v.in_morning;
+            obj.out_time = v.out_morning;
 
             $scope.details.push(obj);
           })
@@ -29,9 +29,9 @@ angular.module('app.controller.Dialogs.ReportDetail', [])
         .then(rows => {
           rows.forEach(v => {
             let obj = {};
-            obj.checkin_date = moment(v.checkin_date).format('DD/MM') + '/' + (moment(v.checkin_date).get('year') + 543);
-            obj.start_time = v.start_time;
-            obj.end_time = v.end_time;
+            obj.checkin_date = moment(v.date_serve).format('DD/MM') + '/' + (moment(v.date_serve).get('year') + 543);
+            obj.in_time = v.in_morning;
+            obj.out_time = v.out_morning;
 
             $scope.details.push(obj);
           })
@@ -41,9 +41,9 @@ angular.module('app.controller.Dialogs.ReportDetail', [])
         .then(rows => {
           rows.forEach(v => {
             let obj = {};
-            obj.checkin_date = moment(v.checkin_date).format('DD/MM') + '/' + (moment(v.checkin_date).get('year') + 543);
-            obj.start_time = v.start_time;
-            obj.end_time = v.end_time;
+            obj.checkin_date = moment(v.date_serve).format('DD/MM') + '/' + (moment(v.date_serve).get('year') + 543);
+            obj.in_time = v.in_morning;
+            obj.out_time = v.out_morning;
 
             $scope.details.push(obj);
           })
