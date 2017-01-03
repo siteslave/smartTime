@@ -25,6 +25,7 @@ require('./controllers/add-member-dialog.js')
 require('./controllers/update-member-dialog.js')
 require('./controllers/reports.js')
 require('./controllers/employees.js')
+require('./controllers/attendances-allow')
 
 require('./services/users.js')
 require('./services/import.js')
@@ -56,7 +57,8 @@ angular.module('app', [
   'app.controllers.UpdateMemberDialog',
   'app.controllers.Reports',
   'app.services.Employee',
-  'app.controllers.Employees'
+  'app.controllers.Employees',
+  'app.controllers.AttendancesAllow'
 ])
 
   .config(function ($stateProvider, $urlRouterProvider,
@@ -125,6 +127,11 @@ angular.module('app', [
         url: '/settings',
         templateUrl: './templates/settings.html',
         controller: 'SettingsCtrl'
+      })
+      .state('attendances-allow', {
+        url: '/attendances-allow',
+        templateUrl: './templates/attendances-allow.html',
+        controller: 'AttendancesAllowCtrl'
       })
     
    })

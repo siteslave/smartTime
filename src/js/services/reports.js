@@ -5,15 +5,6 @@ angular.module('app.services.Report', [])
       getEmployeeWorkLate(db, start, end) {
         let q = $q.defer()
 
-        // let late_time = '08:45:59';
-        // let exit_time = '15:30:00';
-
-        // let in_time = '04:00:00';
-        // let out_time = '17:00:00';
-
-        // let start_date = start;
-        // let end_date = end;
-
         let sql = `
           select e.employee_code, concat(e.first_name, " ", e.last_name) as fullname,
           ls.name as department_name,
